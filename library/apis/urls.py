@@ -1,17 +1,17 @@
 from django.urls import path
 
-from .views import BookListAPIView, BookDetailAPIView
+from .views import BooksAPIView, BookDetailAPIView
 
 
 urlpatterns = [
     path(
         "books/", 
-        BookListAPIView.as_view(), 
-        name="book-list"
+        BooksAPIView.as_view(), 
+        name="books"
     ),
     path(
-        "books/<str:identifier>/", 
+        "books/<str:id_or_slug>/", 
         BookDetailAPIView.as_view(), 
-        name="book-detail"
+        name="book_detail"
     ),
 ]
