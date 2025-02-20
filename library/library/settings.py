@@ -69,6 +69,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    'library.middleware.logging_middleware.RequestLoggingMiddleware',
 ]
 
 ROOT_URLCONF = "library.urls"
@@ -148,32 +150,25 @@ LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
     "formatters": {
-        "detailed": {
-            "format": "[{levelname}] {asctime} {message}",
-            "style": "{",
+        'verbose': {
+            'format': '{levelname} {asctime} {message}',
+            'style': '{',
         },
-        "simple": {
-            "format": "[{levelname}] {message}",
-            "style": "{",
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
         },
     },
     "handlers": {
-        "console": {
-            "level": "INFO",  
+        "console": { 
             "class": "logging.StreamHandler",  
-            "formatter": "simple",  
+            "formatter": "verbose",  
         },
     },
     "loggers": {
         "django": {
             "handlers": ["console"],  
             "level": "INFO",  
-            "propagate": True,
-        },
-        "django.request": {
-            "handlers": ["console"], 
-            "level": "INFO",  
-            "propagate": False,
         },
     },
 }
