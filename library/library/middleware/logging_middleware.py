@@ -1,42 +1,27 @@
 import logging
-import time
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger("django")
 
 class RequestLoggingMiddleware:
-    """Middleware to log request details and response status codes."""
-    
+    """Middleware to log request details including user and IP address."""
+
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        start_time = time.time()
+        user = request.user if request.user.is_authenticated else "Anonymous"
+        ip = self.get_client_ip(request)
 
-        # Process request
+        logger.info(f"[{request.method}] {request.path} - Requested by {user} from {ip}")
+
         response = self.get_response(request)
-
-        # Log detailed request & response info
-        self.log_request_response(request, response, start_time)
-
         return response
 
-    def log_request_response(self, request, response, start_time):
-        """Logs detailed info about each request and response."""
-        execution_time = round((time.time() - start_time) * 1000, 2)  # in ms
-        log_message = (
-            f"[{request.method}] {request.path} - Status {response.status_code} "
-            f"- Time: {execution_time}ms"
-        )
-
-        # Log extra data for debugging
-        extra_data = {
-            "method": request.method,
-            "path": request.path,
-            "status": response.status_code,
-            "execution_time": execution_time,
-        }
-
-        if response.status_code >= 400:
-            logger.error(log_message, extra=extra_data)
+    def get_client_ip(self, request):
+        """Get client IP address from request."""
+        x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(",")[0]
         else:
-            logger.info(log_message, extra=extra_data)
+            ip = request.META.get("REMOTE_ADDR")
+        return ip
