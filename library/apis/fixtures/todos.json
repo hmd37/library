@@ -1,0 +1,35 @@
+[
+    {
+        "model": "myapp.Todo",
+        "pk": 1,
+        "fields": {
+            "task": "Task 1",
+            "completed": false,
+            "priority": 1,
+            "assignee": "John",
+            "group": "Group A"
+        }
+    },
+    {
+        "model": "myapp.Todo",
+        "pk": 2,
+        "fields": {
+            "task": "Task 2",
+            "completed": true,
+            "priority": 3,
+            "assignee": "Jane",
+            "group": "Group B"
+        }
+    },
+    {
+        "model": "myapp.Todo",
+        "pk": 3,
+        "fields": {
+            "task": "Task 3",
+            "completed": false,
+            "priority": 2,
+            "assignee": "John",
+            "group": "Group A"
+        }
+    }
+]
